@@ -17,13 +17,22 @@ Foldfer : `belajar-java/2025-07-06`
     `   }                                               `
 
     Penjelasan per bagian :
-    | Baris                                    | Penjelasan                                                                                       |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `public class HelloWorld`                | Mendefinisikan **kelas utama** bernama `HelloWorld`. Setiap file Java harus punya 1 class utama. |
-| `{`                                      | Tanda kurung buka menandai awal dari isi class.                                                  |
-| `public static void main(String[] args)` | Method utama tempat program dieksekusi pertama kali. Wajib ada di setiap program Java.           |
-| `System.out.println("Halo, Dunia!");`    | Mencetak teks ke layar. `System.out.println` adalah perintah untuk menampilkan teks.             |
-| `}`                                      | Menutup blok kode `main` dan `class`.                                                            |
+    | ---------------------------------------- | ------------------------------------------------------------------ |
+    | **Baris**                                | **Penjelasan**                                                     |
+    | ---------------------------------------- | ------------------------------------------------------------------ |
+    | `public class HelloWorld`                | Mendefinisikan **kelas utama** bernama `HelloWorld`. Setiap file   |
+    |                                          | Java harus punya 1 class utama.                                    |
+    | ---------------------------------------- | ------------------------------------------------------------------ |
+    | `{`                                      | Tanda kurung buka menandai awal dari isi class.                    |
+    | ---------------------------------------- | ------------------------------------------------------------------ |
+    | `public static void main(String[] args)` | Method utama tempat program dieksekusi pertama kali. Wajib ada di  |
+    |                                          | setiap program Java.                                               |
+    | ---------------------------------------- | ------------------------------------------------------------------ |
+    | `System.out.println("Halo, Dunia!");`    | Mencetak teks ke layar. `System.out.println` adalah perintah untuk |
+    |                                          | menampilkan teks.                                                  |
+    | ---------------------------------------- | ------------------------------------------------------------------ |
+    | `}`                                      | Menutup blok kode `main` dan `class`.                              |
+    | ---------------------------------------- | ------------------------------------------------------------------ |
 
 
 - Cara compile dan run program java mengunakan terminal (`javac`, `java`)
