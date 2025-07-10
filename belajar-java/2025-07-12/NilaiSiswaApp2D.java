@@ -27,6 +27,9 @@ public class NilaiSiswaApp2D {
                     int cari = input.nextInt();
                     nilaiSiswa.cariNilai(cari);
                     break;
+                case 6:
+                    nilaiSiswa.urutkanNilaiPerSiswa();
+                    break;
                 case 0:
                     System.out.println("Program berhenti.");
                     berhenti = true;

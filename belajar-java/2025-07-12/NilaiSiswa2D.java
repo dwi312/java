@@ -119,22 +119,34 @@ public class NilaiSiswa2D {
 
     public void urutkanNilaiPerSiswa() {
         // (opsional lanjutan) urutkan nilai tiap siswa dari kecil ke besar
-        System.out.println("\n--- Mengurutkan nilai per siswa (Fitur belum diimplementasikan) ---");
+        System.out.println("\n--- Mengurutkan nilai siswa ---");
         System.out.println();
 
         if (cekArray()) {
             return;
         }
 
-        System.out.println("urutkan nilai tiap siswa dari kecil ke besar");
         // Implementasi ini akan lebih kompleks karena membutuhkan penyalinan array atau algoritma sort.
         // konsep algoritma sort dengan bubble short.
 
-        for(int i = 0; i < jumlahSiswa; i++) {
+         for (int i = 0; i < jumlahSiswa; i++) {
+            // Bubble sort untuk setiap siswa
             for (int j = 0; j < jumlahMapel - 1; j++) {
-                for ()
-
+                for (int k = 0; k < jumlahMapel - j - 1; k++) {
+                    if (nilai[i][k] > nilai[i][k + 1]) {
+                        // Tukar nilai
+                        int temp = nilai[i][k];
+                        nilai[i][k] = nilai[i][k + 1];
+                        nilai[i][k + 1] = temp;
+                    }
+                }
             }
+            // Tampilkan hasil setelah diurutkan
+            System.out.print("Nilai siswa ke-" + (i + 1) + " setelah diurutkan: ");
+            for (int j = 0; j < jumlahMapel; j++) {
+                System.out.print(nilai[i][j] + " ");
+            }
+            System.out.println();
         }
 
     }
