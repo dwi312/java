@@ -1,4 +1,10 @@
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -12,44 +18,53 @@ public class SiswaController {
     private int jumlahSiswa;
     private static final int NILAI_AWAL = 3;
 
+    private String filePath = "data_siswa.txt";
+
     public SiswaController() {
         this.daftarSiswa = new Siswa[NILAI_AWAL];
         this.jumlahSiswa = 0;
     }
 
-    
     public void run() {
+        bacaDariFile();
+
         for (exit = false; !exit;) {
             menu();
             inputValid();
             input.nextLine();
-            menuPilihan(pilihan);
+            exit = menuPilihan(pilihan);
             System.out.println();
         }
+
+        simpanDataFile();
         input.close();
+        System.out.println("Program berhenti. Terimakasih");
     }
 
     public void tambahSiswa() {
         // Menambah data siswa baru.
         System.out.println("=== Tambah siswa ===");
-        if(jumlahSiswa == daftarSiswa.length) {
+        if (jumlahSiswa == daftarSiswa.length) {
             resizeArray();
         }
 
         System.out.print("Masukan Nama Siswa : ");
         String nama = input.nextLine();
-        
+
         String nim;
         boolean nimDuplikat;
-        do { 
+        do {
+            nimDuplikat = false;
             System.out.print("Masukan Nim Siswa : ");
             nim = input.nextLine();
-            nimDuplikat = false;
 
-            for(int i = 0; i < jumlahSiswa; i++) {
-                nimDuplikat = true;
-                System.out.println("NIM sudah terdaftar.");
-                break;
+            // cek nim duplikat
+            for (int i = 0; i < jumlahSiswa; i++) {
+                if (daftarSiswa[i].getNim().equalsIgnoreCase(nim)) {
+                    nimDuplikat = true;
+                    System.out.println("NIM sudah terdaftar.");
+                    break;
+                }
             }
         } while (nimDuplikat);
 
@@ -59,14 +74,14 @@ public class SiswaController {
                 System.out.print("Masukan Nilai Siswa (0-100): ");
                 nilai = input.nextInt();
                 input.nextLine();
-                if(nilai < 0 || nilai > 100) {
+                if (nilai < 0 || nilai > 100) {
                     System.out.println("Nilai harus diantara 0 dan 100.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Input nilai harus angka.");
                 input.nextLine();
             }
-            
+
         }
 
         daftarSiswa[jumlahSiswa] = new Siswa(nama, nim, nilai);
@@ -86,9 +101,9 @@ public class SiswaController {
             System.out.print((i + 1) + ". ");
             daftarSiswa[i].displaySiswa();
         }
-        
+
     }
-    
+
     public void rangkingSiswa() {
         // menampilkan nilai siswa diurutkan dgn nilai tertinggi
         System.out.println("\n=== Rangking Siswa (Nilai Tertinggi) ===");
@@ -170,11 +185,10 @@ public class SiswaController {
                         newNim = tempNim;
                         daftarSiswa[indeksDitemukan].setNim(newNim);
                     }
-                } else { 
+                } else {
                     break;
                 }
             } while (nimDuplikat);
-
 
             int newNilai = daftarSiswa[indeksDitemukan].getNilai(); // Inisialisasi dengan nilai lama
             System.out.print("Nilai baru (" + daftarSiswa[indeksDitemukan].getNilai() + ") (0-100): ");
@@ -196,6 +210,97 @@ public class SiswaController {
             daftarSiswa[indeksDitemukan].displaySiswa();
         } else {
             System.out.println("Siswa dengan NIM '" + nimCari + "' tidak ditemukan.");
+        }
+
+    }
+
+    public void simpanDataFile() {
+        // Simpan data ke file.
+        System.out.println("\n=== Menyimpan Data ke File ===");
+        if (dataKosong()) {
+            System.out.println("Tidak ada data siswa untuk disimpan.");
+            return;
+        }
+
+        // Menggunakan try-with-resources untuk memastikan FileWriter dan PrintWriter
+        // tertutup otomatis
+        try (FileWriter tulisFile = new FileWriter(filePath);
+                PrintWriter simpanFile = new PrintWriter(tulisFile);) {
+
+            simpanFile.println("NIM, Nama, Nilai");
+
+            for (int i = 0; i < jumlahSiswa; i++) {
+                simpanFile.println(daftarSiswa[i].getNim() + "," +
+                        daftarSiswa[i].getNama() + "," +
+                        daftarSiswa[i].getNilai());
+            }
+            System.out.println("Data berhasil disimpan ke file : " + filePath);
+        } catch (IOException e) {
+            System.err.println("Terjadi kesalahan saat menyimpan data.");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void bacaDariFile() {
+        // Membaca data dari file
+        // Metodenya mengkosongkan daftar siswa yang ada sebelum memuat dari file.
+        System.out.println("\n=== Mengambil Data dari File ===");
+
+        jumlahSiswa = 0;
+        daftarSiswa = new Siswa[NILAI_AWAL];
+
+        try (FileReader file = new FileReader(filePath);
+                BufferedReader reader = new BufferedReader(file);) {
+
+            String headerline = reader.readLine();
+            if (headerline != null) {
+                System.out.println("Mengabaikan baris header: " + headerline);
+            }
+
+            System.out.println("Memulai proses memuat data dari file...");
+
+            String baris;
+            String[] data;
+            int barisDataKe = 0;
+            while ((baris = reader.readLine()) != null) {
+                barisDataKe++;
+                try {
+                    data = baris.split(",");
+                    if (data.length == 3) {
+                        String nim = data[0].trim();
+                        String nama = data[1].trim();
+                        int nilai = Integer.parseInt(data[2].trim());
+
+                        // Cek duplikasi NIM
+                        boolean nimExists = false;
+                        for (int i = 0; i < jumlahSiswa; i++) {
+                            if (daftarSiswa[i].getNim().equalsIgnoreCase(nim)) {
+                                nimExists = true;
+                                System.err.println("Peringatan : NIM " + nim + " sudah digunakan.");
+                                break;
+                            }
+                        }
+                        if (!nimExists) {
+                            if (jumlahSiswa == daftarSiswa.length) {
+                                resizeArray();
+                            }
+                            daftarSiswa[jumlahSiswa] = new Siswa(nama, nim, nilai);
+                            jumlahSiswa++;
+                        }
+                    } else {
+                        System.err.println("Peringatan: Format tidak valid baris ke " + barisDataKe + " : " + baris);
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Peringatan: Nilai tidak valid baris ke " + barisDataKe + " : " + baris);
+                }
+            }
+            System.out.println("Proses selesai, File " + filePath + " telah dimuat.");
+        } catch (FileNotFoundException e) {
+            System.err.println("File " + filePath + " tidak ditemukan.");
+        } catch (IOException e) {
+            System.err.println("Terjadi kesalaha membaca file: " + e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -261,7 +366,7 @@ public class SiswaController {
 
     private void shrinkArray() {
         int kapasitasBaru = daftarSiswa.length / 2;
-        if (kapasitasBaru < NILAI_AWAL) { 
+        if (kapasitasBaru < NILAI_AWAL) {
             kapasitasBaru = NILAI_AWAL;
         }
         daftarSiswa = Arrays.copyOf(daftarSiswa, kapasitasBaru);
@@ -273,17 +378,19 @@ public class SiswaController {
         System.out.println("1. Lihat daftar siswa");
         System.out.println("2. Rangking siswa");
         System.out.println("3. Tambah siswa");
-        System.out.println("4. Ubah data siswa");
+        System.out.println("4. Rubah data siswa");
         System.out.println("5. Hapus siswa");
+        System.out.println("6. Simpan data ke file");
+        System.out.println("7. Ambil data dari file");
         System.out.println("0. Keluar");
-        System.out.print("Pilihan (1-5) : ");
+        System.out.print("Pilihan (0-7) : ");
     }
 
     public boolean menuPilihan(int pilihan) {
         exit = false;
         switch (pilihan) {
             case 1:
-                 daftarSiswa();
+                daftarSiswa();
                 break;
             case 2:
                 rangkingSiswa();
@@ -297,8 +404,13 @@ public class SiswaController {
             case 5:
                 hapusSiswa();
                 break;
+            case 6:
+                simpanDataFile();
+                break;
+            case 7:
+                bacaDariFile();
+                break;
             case 0:
-                System.out.println("Program berhenti. Terimakasih");
                 exit = true;
                 break;
             default:
@@ -314,7 +426,7 @@ public class SiswaController {
         while (!valid) {
             try {
                 pilihan = input.nextInt();
-                valid  = true;
+                valid = true;
             } catch (InputMismatchException e) {
                 System.out.print("Input harus angka : ");
                 input.next();

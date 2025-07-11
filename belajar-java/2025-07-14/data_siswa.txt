@@ -1,0 +1,3 @@
+NIM,Nama,Nilai
+230001,Andi,90
+230002,Budi,75
