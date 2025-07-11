@@ -97,6 +97,16 @@ public static boolean isPrima(int n) {
 }
 ```
 
+**d. Contoh Method Berdasarkan Kombinasi**
+| Jenis                         | Contoh                                     | Keterangan                  |
+| ----------------------------- | ------------------------------------------ | --------------------------- |
+| Tanpa parameter, tanpa return | `void tampilHalo()`                        | Sekadar mencetak            |
+| Dengan parameter              | `void sapa(String nama)`                   | Menerima input              |
+| Dengan return                 | `int kali(int a, int b)`                   | Mengembalikan hasil         |
+| Dengan parameter + return     | `double hitungRata(int total, int jumlah)` | Hitung dan kembalikan nilai |
+
+```
+
 ---
 
 ## Modularisasi dengan Method
