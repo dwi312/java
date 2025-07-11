@@ -1,120 +1,135 @@
 # Method (Fungsi) dalam Java
 ## Apa itu Method
-- Dalam Java, method adalah blok kode di dalam suatu class yang berisi instruksi untuk melakukan tugas tertentu.
-- Method mirip dengan fungsi (function), tetapi selalu didefinisikan dalam konteks OOP (Object-Oriented Programming) dan terkait dengan sebuah objek atau kelas.
-- Dengan kata lain, method mendeskripsikan perilaku atau aksi yang dapat dilakukan oleh objek dari kelas tersebut (misalnya, menghitung nilai, memodifikasi atribut, atau berinteraksi dengan objek lain).
-- Sebuah method bisa jadi mengembalikan nilai tertentu (return value) atau tidak (void), serta dapat menerima argumen/input yang diproses di dalamnya.
-- Method (fungsi) adalah blok kode yang bisa dipanggil berkali-kali untuk menjalankan tugas tertentu.
-**Tujuannya**:
-    - Menghindari duplikasi kode
-    - Membuat program lebih rapi dan mudah dibaca
-    - Memisahkan logika menjadi bagian-bagian kecil
+- Method adalah blok kode yang dapat dipanggil untuk menjalankan suatu aksi.
+- Dalam Java, semua method berada dalam class.
+- Method dapat menerima input (`parameter`) dan/atau mengembalikan nilai (`return`).
+- Bertujuan untuk modularisasi program, mencegah duplikasi, dan mempermudah pemeliharaan.
 
 ---
 
 ## Struktur dasar Method
-**Struktur umum method meliputi beberapa bagian utama**:
-- method tanpa nilai balik (void) dan tanpa parameter
 ```java
-public static void sapa() {
-    System.out.println("Halo, selamat belajar Java!");
+[access_modifier] [non_access_modifier] [return_type] namaMethod([parameter]) {
+    // isi kode
+    [return hasil]; // jika return_type bukan void
 }
 ```
+| Bagian                | Contoh                  | Keterangan                   |
+| --------------------- | ----------------------- | ---------------------------- |
+| access\_modifier      | `public`, `private`     | Hak akses method             |
+| non\_access\_modifier | `static`, `final`, ...  | Modifier tambahan            |
+| return\_type          | `void`, `int`, `String` | Tipe nilai yang dikembalikan |
+| namaMethod            | `tampil`, `jumlah`      | Nama method                  |
+| parameter             | `(int x, String y)`     | Nilai yang dikirim ke method |
 
-- method dengan parameter
+
+
+## Jenis Method
+| Jenis                          | Contoh                                 | Penjelasan                                 |
+| ------------------------------ | -------------------------------------- | ------------------------------------------ |
+| Tanpa return, tanpa parameter  | `public static void tampil()`          | Tidak menerima input & tidak mengembalikan |
+| Tanpa return, dengan parameter | `public static void sapa(String nama)` | Menerima input tanpa mengembalikan nilai   |
+| Dengan return                  | `public static int kuadrat(int x)`     | Mengembalikan hasil                        |
+
+---
+## Static vs Non-Static Method
+| Tipe         | Ciri-ciri                                        | Pemanggilan          |
+| ------------ | ------------------------------------------------ | -------------------- |
+| `static`     | Milik class, bisa dipanggil langsung tanpa objek | `NamaClass.method()` |
+| `non-static` | Milik objek, butuh `new` untuk dipanggil         | `obj.method()`       |
+
+---
+
+## Contoh Method
 ```java
-public static void sapaNama(String nama) {
+public static void tampilJudul() {
+    System.out.println("== APLIKASI NILAI ==");
+}
+
+public static int kuadrat(int x) {
+    return x * x;
+}
+
+public void sapa(String nama) {
     System.out.println("Halo, " + nama);
 }
-```
 
-- method dengan nilai balik
-```java
-public static int tambah(int a, int b) {
-    return a + b;
+public double hitungRata(int total, int jumlah) {
+    return (double) total / jumlah;
 }
+
 ```
-
----
-
-## Cara Memanggil Method
+### Contoh Program Lengkap
 ```java
-public class Contoh {
+public class MethodDemo {
+
+    public static void tampilJudul() {
+        System.out.println("== DEMO METHOD ==");
+    }
+
+    public static int tambah(int a, int b) {
+        return a + b;
+    }
+
+    public void sapaUser(String nama) {
+        System.out.println("Halo, " + nama + "!");
+    }
+
+    public double hitungRata(int total, int jumlah) {
+        return (double) total / jumlah;
+    }
+
     public static void main(String[] args) {
-        sapa(); // memanggil method tanpa parameter
-        sapaNama("Dwi"); // memanggil method dengan parameter
-        int hasil = tambah(5, 7);
-        System.out.println("Hasil: " + hasil);
+        tampilJudul(); // static
+
+        int hasil = tambah(3, 4);
+        System.out.println("Hasil tambah: " + hasil);
+
+        MethodDemo demo = new MethodDemo();
+        demo.sapaUser("Dwi");
+
+        double rata = demo.hitungRata(80, 4);
+        System.out.println("Rata-rata: " + rata);
     }
-    
-    // method-method di bawah bisa berada di luar main
-    public static void sapa() { ... }
-    public static void sapaNama(String nama) { ... }
-    public static int tambah(int a, int b) { ... }
 }
+
+
 ```
 
 ---
 
-## Parameter dan Return Value
-| Jenis Method           | Contoh                                 | Penjelasan                              |
-| ---------------------- | -------------------------------------- | --------------------------------------- |
-| Tanpa parameter & void | `public static void cetak()`           | Tidak menerima atau mengembalikan nilai |
-| Dengan parameter       | `public static void sapa(String nama)` | Menerima input, tidak mengembalikan     |
-| Dengan return value    | `public static int kali(int a, int b)` | Mengembalikan hasil perhitungan         |
+## Rangkuman Konsep
+| Konsep        | Penjelasan                                      |
+| ------------- | ----------------------------------------------- |
+| `void`        | Method tidak mengembalikan nilai                |
+| `return`      | Digunakan untuk mengembalikan nilai             |
+| `parameter`   | Input ke dalam method                           |
+| `static`      | Method milik class, dipanggil tanpa objek       |
+| `non-static`  | Method milik objek, dipanggil lewat instance    |
+| `overloading` | Method dengan nama sama, tapi parameter berbeda |
 
 ---
 
-### Contoh sederhana:
-**a. Cetak bilangan genap dari 1–N**
-```java
-public static void cetakGenap(int n) {
-    for (int i = 1; i <= n; i++) {
-        if (i % 2 == 0) System.out.print(i + " ");
-    }
-}
-```
-
-**b. Hitung faktorial**
-```java
-public static int faktorial(int n) {
-    int hasil = 1;
-    for (int i = 2; i <= n; i++) {
-        hasil *= i;
-    }
-    return hasil;
-}
-```
-
-**c. Cek bilangan prima**
-```java
-public static boolean isPrima(int n) {
-    if (n <= 1) return false;
-    for (int i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i == 0) return false;
-    }
-    return true;
-}
-```
-
-**d. Contoh Method Berdasarkan Kombinasi**
-
-| Jenis                         | Contoh                                     | Keterangan                  |
-| ----------------------------- | ------------------------------------------ | --------------------------- |
-| Tanpa parameter, tanpa return | `void tampilHalo()`                        | Sekadar mencetak            |
-| Dengan parameter              | `void sapa(String nama)`                   | Menerima input              |
-| Dengan return                 | `int kali(int a, int b)`                   | Mengembalikan hasil         |
-| Dengan parameter + return     | `double hitungRata(int total, int jumlah)` | Hitung dan kembalikan nilai |
-
----
-
-## Modularisasi dengan Method
-Dalam program besar (misalnya data siswa), kamu bisa memecah fitur ke dalam method:
+## Modularisasi Program
 ```java
 public static void tambahSiswa(ArrayList<Siswa> daftar) { ... }
 public static void tampilkanSiswa(ArrayList<Siswa> daftar) { ... }
 public static void hapusSiswa(ArrayList<Siswa> daftar) { ... }
+
 ```
+---
+
+## Tips Praktis
+- Gunakan static untuk method global/utility
+- Gunakan non-static untuk operasi berbasis objek/data
+- Gunakan return jika butuh hasil untuk diproses lagi
+- Gunakan void untuk aksi tanpa hasil (misal cetak)
+
+---
+
+### Referensi Tambahan
+- Oracle Java Documentation
+- Tutorial internal : `belajar-java/method`
 
 ---
 
