@@ -128,7 +128,7 @@ public static void hapusSiswa(ArrayList<Siswa> daftar) { ... }
 ---
 
 ### Referensi Tambahan
-- Oracle Java Documentation
+- [Oracle Java Documentation](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
 - Tutorial internal : `belajar-java/method`
 
 ---
