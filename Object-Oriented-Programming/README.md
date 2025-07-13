@@ -184,8 +184,7 @@ belajar-java/
 ## Referensi
 - [Oracle Java Documentation](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
 - [Tutorial OOP Java - W3Schoolsesmi Java - Oracle](https://www.w3schools.com/java/java_oop.asp)
-- [Tutorial internal : `belajar-java/Object-Oriented Programming`
-](https://github.com/dwi312/java/tree/main/Object-Oriented Programming)
+- [Tutorial internal : `belajar-java/Object-Oriented Programming`](https://github.com/dwi312/java/tree/main/Object-Oriented Programming)
 
 ---
 
