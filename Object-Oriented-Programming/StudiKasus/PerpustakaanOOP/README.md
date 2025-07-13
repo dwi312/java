@@ -38,7 +38,7 @@ Perpustakaan ingin memiliki sistem sederhana untuk menyimpan dan menampilkan inf
     - `ukuranFileMB`
 - Override `tampilkanInfo()` untuk menampilkan semua data termasuk jenis buku
 4. **Class Main**
-- Buat objek dari BukuCetak dan `BukuDigital`
+- Buat objek dari `BukuCetak` dan `BukuDigital`
 - Tampilkan informasi buku menggunakan method `tampilkanInfo()`
 
 ---
