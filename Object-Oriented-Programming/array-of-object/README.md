@@ -125,12 +125,17 @@ daftar[lama.length] = new Siswa("Baru", "003");
 ---
 
 ## Tips & Best Practice
-| Tips                                  | Penjelasan                                    |
-| ------------------------------------- | --------------------------------------------- |
-| Gunakan `null` untuk slot kosong      | Agar bisa mengecek apakah elemen sudah terisi |
-| Cek null sebelum akses method         | Hindari `NullPointerException`                |
-| Gunakan `ArrayList` jika data dinamis | Lebih praktis dan powerful                    |
-| Buat method bantu                     | Misalnya: tambah, cari, hapus, tampilkan      |
+| Tips                                 | Penjelasan                                                                                                         |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Inisialisasi elemen secara manual    | Setelah membuat array, semua elemen bernilai `null`. Harus diisi satu per satu dengan `new`.                       |
+| Cek `null` sebelum akses elemen      | Untuk menghindari `NullPointerException`, selalu periksa `if (obj != null)` sebelum digunakan.                     |
+| Gunakan loop untuk pemrosesan massal | Gunakan `for` atau `for-each` loop untuk menampilkan, mencari, atau memproses isi array.                           |
+| Gunakan konstanta untuk ukuran array | Simpan ukuran array dalam variabel `final int` agar kode lebih terstruktur dan mudah diubah.                       |
+| Kosongkan slot untuk "menghapus"     | Karena array bersifat tetap, kamu bisa set elemen ke `null` sebagai cara "menghapus" isi.                          |
+| Buat method bantu/modular            | Buat method seperti `tampilkanSemua()`, `cariSiswa()`, atau `ubahData()` agar program lebih rapi dan reusable.     |
+| Salin ke array baru untuk resize     | Jika perlu menambah atau menghapus elemen secara permanen, buat array baru lalu salin elemen lama yang diperlukan. |
+| Hindari akses di luar indeks         | Selalu periksa batas indeks saat mengakses array untuk mencegah `ArrayIndexOutOfBoundsException`.                  |
+
 
 ---
 
