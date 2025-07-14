@@ -4,11 +4,12 @@
 ---
 
 ## Deskripsi Masalah:
-Buatlah sebuah program Java sederhana untuk mengelola data siswa menggunakan Array of Object. Setiap siswa memiliki atribut:
-- nama (String)
-- nim (String)
-- nilai (int)
-Gunakan array tetap (misalnya 5 siswa) dan implementasikan operasi dasar secara manual (**tanpa ArrayList**).
+- Buatlah sebuah program Java sederhana untuk mengelola data siswa menggunakan Array of Object. Setiap siswa memiliki atribut:
+  - nama (String)
+  - nim (String)
+  - nilai (int)
+
+- Gunakan array tetap (misalnya 5 siswa) dan implementasikan operasi dasar secara manual (**tanpa ArrayList**).
 
 ---
 
@@ -30,13 +31,14 @@ Gunakan array tetap (misalnya 5 siswa) dan implementasikan operasi dasar secara 
     - `tampilkanInfo()` untuk menampilkan data siswa
 2. **Class `Main` atau class lain**:
 Implementasikan fitur berikut dalam bentuk menu:
-| No | Fitur                                | Keterangan                                               |
-| -- | ------------------------------------ | -------------------------------------------------------- |
-| 1  | Menambahkan data siswa ke array      | Input data siswa dan simpan ke elemen array yang kosong  |
-| 2  | Menampilkan semua data siswa         | Tampilkan semua data siswa yang sudah diisi (tidak null) |
-| 3  | Mengubah data siswa berdasarkan NIM  | Cari siswa berdasarkan NIM, lalu ubah nama atau nilainya |
-| 4  | Menghapus data siswa berdasarkan NIM | Set elemen array menjadi `null` jika data ditemukan      |
-| 5  | Mencari siswa berdasarkan nama/NIM   | Cari dan tampilkan data siswa jika ditemukan             |
+
+| Fitur                                | Keterangan                                               |
+| ------------------------------------ | -------------------------------------------------------- |
+| Menambahkan data siswa ke array      | Input data siswa dan simpan ke elemen array yang kosong  |
+| Menampilkan semua data siswa         | Tampilkan semua data siswa yang sudah diisi (tidak null) |
+| Mengubah data siswa berdasarkan NIM  | Cari siswa berdasarkan NIM, lalu ubah nama atau nilainya |
+| Menghapus data siswa berdasarkan NIM | Set elemen array menjadi `null` jika data ditemukan      |
+| Mencari siswa berdasarkan nama/NIM   | Cari dan tampilkan data siswa jika ditemukan             |
 
 ---
 
@@ -81,7 +83,7 @@ Pilih menu (1-6): 2
 === DAFTAR SISWA ===
 1. Jokowow | NIM: 23001 | Nilai: 85
 2. Phbowow | NIM: 23002 | Nilai: 90
-do-while
+
 Pilih menu (1-6): 3
 
 Masukkan NIM yang ingin diubah: 23001
@@ -93,8 +95,8 @@ Pilih menu (1-6): 5
 
 Masukkan NIM yang dicari: 23002
 Siswa ditemukan:
-Nama  : Phbowow
-NIM   : 23002
+Nama  : Phbowow  
+NIM   : 23002  
 Nilai : 90
 
 Pilih menu (1-6): 4
@@ -109,7 +111,6 @@ Pilih menu (1-6): 2
 
 Pilih menu (1-6): 6
 Terima kasih telah menggunakan program!
-
 
 ```
 ---
