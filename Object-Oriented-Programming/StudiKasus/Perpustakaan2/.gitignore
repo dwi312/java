@@ -1,0 +1,10 @@
+# File hasil kompilasi Java
+*.class
+
+# Folder output
+/bin/
+/out/
+
+# Sistem file lainnya
+.DS_Store
+*.log

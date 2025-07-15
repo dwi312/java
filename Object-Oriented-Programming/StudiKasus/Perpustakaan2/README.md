@@ -26,6 +26,7 @@ Transaksi[] daftarTransaksi = new Transaksi[20]; (opsional)
 
 ```
 - **Fitur Program**:
+```
 | Menu                  | Deskripsi                                |
 | --------------------- | ---------------------------------------- |
 | 1. Tambah Buku        | Input data buku dan simpan ke array      |
@@ -36,6 +37,8 @@ Transaksi[] daftarTransaksi = new Transaksi[20]; (opsional)
 | 6. Kembalikan Buku    | Tandai buku sebagai kembali              |
 | 7. Riwayat Peminjaman | Menampilkan data peminjaman (opsional)   |
 | 8. Keluar             | Selesai                                  |
+
+```
 
 **Class yang Dibuat**:
 - `Buku`: kodeBuku, judul, penulis, status (tersedia/dipinjam)
@@ -58,26 +61,20 @@ Transaksi[] daftarTransaksi = new Transaksi[20]; (opsional)
 ```
 === SISTEM PERPUSTAKAAN SEDERHANA ===
 
-Tambah Buku
-
-Tambah Anggota
-
-Daftar Buku
-
-Daftar Anggota
-
-Pinjam Buku
-
-Kembalikan Buku
-
-Riwayat Peminjaman
-
-Keluar
+1. Tambah Buku
+2. Tambah Anggota
+3. Daftar Buku
+4. Daftar Anggota
+5. Pinjam Buku
+6. Kembalikan Buku
+7. Riwayat Peminjaman
+0. Keluar
+-------------------------------------
 Pilih menu: 1
 
 Masukkan kode buku : B001
 Masukkan judul buku : Belajar Java
-Masukkan penulis : Dwi Susilo
+Masukkan penulis : Akira toriyama
 Data buku berhasil ditambahkan!
 
 ```
