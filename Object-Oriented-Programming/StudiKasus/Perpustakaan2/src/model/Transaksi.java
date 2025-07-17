@@ -9,7 +9,8 @@ public class Transaksi {
     private LocalDate tanggalPinjam;
     private LocalDate tanggalKembali;
 
-    public Transaksi(String idTransaksi, String idAnggota, String kodeBuku, LocalDate tanggalPinjam, LocalDate tanggalKembali) {
+    public Transaksi(String idTransaksi, String idAnggota, String kodeBuku, LocalDate tanggalPinjam,
+            LocalDate tanggalKembali) {
         this.idTransaksi = idTransaksi;
         this.idAnggota = idAnggota;
         this.kodeBuku = kodeBuku;
@@ -17,13 +18,32 @@ public class Transaksi {
         this.tanggalKembali = tanggalKembali;
     }
 
+    public String getIdTransaksi() {
+        return idTransaksi;
+    }
+
+    public String getIdAnggota() {
+        return idAnggota;
+    }
+
+    public String getKodeBuku() {
+        return kodeBuku;
+    }
+
+    public LocalDate getTanggalPinjam() {
+        return tanggalPinjam;
+    }
+
+    public LocalDate getTanggalKembali() {
+        return tanggalKembali;
+    }
+
     @Override
     public String toString() {
         return idTransaksi +
-             " | Anggota: " + idAnggota +
-             " | Buku: " + kodeBuku +
-             " | Pinkam: " + tanggalPinjam +
-             " | Kembali: " + tanggalKembali
-             ;
+                " | Anggota: " + idAnggota +
+                " | Buku: " + kodeBuku +
+                " | Pinkam: " + tanggalPinjam +
+                " | Kembali: " + tanggalKembali;
     }
 }

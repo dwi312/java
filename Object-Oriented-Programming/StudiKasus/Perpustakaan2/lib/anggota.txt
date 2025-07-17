@@ -1,0 +1,10 @@
+A001|John Doe|john.doe@email.com|081234567890
+A002|Jane Smith|jane.smith@email.com|081298765432
+A003|Michael Johnson|michael.j@email.com|081112223344
+A004|Sarah Williams|sarah.w@email.com|081334455667
+A005|David Brown|david.b@email.com|081556677889
+A006|Lisa Davis|lisa.d@email.com|081778899001
+A007|Robert Wilson|robert.w@email.com|081990011122
+A008|Emily Taylor|emily.t@email.com|081223344556
+A009|Thomas Anderson|thomas.a@email.com|081445566778
+A010|Jessica Martinez|jessica.m@email.com|081667788990

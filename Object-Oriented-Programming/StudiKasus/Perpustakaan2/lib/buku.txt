@@ -1,0 +1,10 @@
+B001|Clean Code|Robert C. Martin|Tersedia
+B002|Design Patterns|Erich Gamma|Tersedia
+B003|The Pragmatic Programmer|Andrew Hunt|Tersedia
+B004|Refactoring|Martin Fowler|Tersedia
+B005|Head First Java|Kathy Sierra|Tersedia
+B006|Effective Java|Joshua Bloch|Tersedia
+B007|Java: The Complete Reference|Herbert Schildt|Tersedia
+B008|Introduction to Algorithms|Thomas H. Cormen|Tersedia
+B009|Structure Computer Programs|Harold Abelson|Tersedia
+B010|The Art of Computer Programming|Donald Knuth|Tersedia
