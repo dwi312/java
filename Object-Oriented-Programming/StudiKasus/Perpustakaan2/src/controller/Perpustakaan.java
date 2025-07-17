@@ -76,7 +76,7 @@ public class Perpustakaan {
             case 7:
                 PerpusUtil.clearScreen();
                 System.out.println("\n=== Riwayat Peminjaman ===");
-                // transaksi.riwayatPinjam()
+                transaksi.riwayatPinjam();
                 PerpusUtil.enterToContinue(input);
                 break;
 

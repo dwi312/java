@@ -185,4 +185,13 @@ public class BukuService {
         }
     }
 
+    public Buku bukuDipinjam() {
+        for (int i = 0; i < daftarBuku.length; i++) {
+            if (daftarBuku[i].getStatus().equalsIgnoreCase("Dipinjam")) {
+                return daftarBuku[i];
+            }
+        }
+        return null;
+    }
+
 }
