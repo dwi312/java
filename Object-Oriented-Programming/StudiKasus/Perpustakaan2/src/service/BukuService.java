@@ -29,7 +29,7 @@ public class BukuService {
     }
 
     public Buku cariBuku(String kodeBuku) {
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < daftarBuku.length; i++) {
             if (daftarBuku[i].getKodeBuku().equalsIgnoreCase(kodeBuku)) {
                 return daftarBuku[i];
             }
@@ -125,33 +125,35 @@ public class BukuService {
                     daftarBuku[i].getJudul(),
                     daftarBuku[i].getPenulis());
             }
-
-            if (num == 0) {
-                System.out.println("Tidak ada buku yang tersedia untuk dipinjam saat ini.");
-            }
         }
         System.out.println("---------------------------------------------------------------------------");
     }
 
     public String pilihBuku(Scanner input) {
         String kodeBukuSementara = "";
-        boolean numValid;
+        int num;
+        boolean ulang;
+        
+        
         do {
             System.out.print("Pilih nomor yang tersedia: ");
-            int num = PerpusUtil.inputInt(input);
+            num = PerpusUtil.inputInt(input);
+            ulang = false;
             
-            numValid = false;
-            for (int i = 0; i < daftarBuku.length; i++) {
-                if (daftarBuku[num].getStatus().equalsIgnoreCase("Tersedia")) {
-                    kodeBukuSementara =  daftarBuku[num].getKodeBuku();
-                } else {
-                    numValid = true;
-                    System.out.println("Pilihan: " + num +" tidak valid.");
-                    break;
-                }
+            if(num < 1 || num > daftarBuku.length || daftarBuku[num - 1] == null) {
+                ulang = true;
+                System.out.println("Pilihan: " + num +" tidak valid.");
+            } else if (!daftarBuku[num-1].getStatus().equalsIgnoreCase("Tersedia")) {
+                ulang = true;
+            } else {
+                kodeBukuSementara = daftarBuku[num-1].getKodeBuku();
+                daftarBuku[num-1].setStatus("Dipinjam");
             }
-        } while (numValid);
+            
+        } while (ulang);
 
+        System.out.println(kodeBukuSementara);
+        
         return kodeBukuSementara;
     }
 
@@ -187,7 +189,7 @@ public class BukuService {
 
     public Buku bukuDipinjam() {
         for (int i = 0; i < daftarBuku.length; i++) {
-            if (daftarBuku[i].getStatus().equalsIgnoreCase("Dipinjam")) {
+            if (daftarBuku[i] != null && daftarBuku[i].getStatus().equalsIgnoreCase("Dipinjam")) {
                 return daftarBuku[i];
             }
         }

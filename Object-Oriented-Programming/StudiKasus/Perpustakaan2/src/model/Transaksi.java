@@ -43,7 +43,7 @@ public class Transaksi {
         return idTransaksi +
                 " | Anggota: " + idAnggota +
                 " | Buku: " + kodeBuku +
-                " | Pinkam: " + tanggalPinjam +
+                " | Pinjam: " + tanggalPinjam +
                 " | Kembali: " + tanggalKembali;
     }
 }

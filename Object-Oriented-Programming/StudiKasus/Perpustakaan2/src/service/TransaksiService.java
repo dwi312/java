@@ -76,13 +76,16 @@ public class TransaksiService {
             return;
         }
 
+        int jumlahPinjam = 0;
         for (int i = 0; i < daftarTransaksi.length; i++) {
-            if (daftarTransaksi[i] != null && daftarTransaksi[i].getIdAnggota() == idAnggota) {
-                if ( i > 2) {
-                    System.out.println("Batas peminjam hanya 2 buku.");
-                    return;
-                }
+            if (daftarTransaksi[i] != null && daftarTransaksi[i].getIdAnggota().equals(idAnggota)) {
+                jumlahPinjam++;
             }
+        }
+
+        if ( 2 <= jumlahPinjam) {
+            System.out.println("Batas peminjam hanya 2 buku.");
+            return;
         }
 
         bukuService.bukuTersedia();
@@ -90,6 +93,9 @@ public class TransaksiService {
         LocalDate tanggalPinjam = LocalDate.now();
         LocalDate tanggalKembali = null;
         String idTransaksi = generateIdTransaksi();
+
+        System.out.println("Buku berhasil dipinjam.");
+        System.out.println("Tanggal: " + tanggalPinjam);
 
         daftarTransaksi[index] = new Transaksi(idTransaksi, idAnggota, kodeBuku, tanggalPinjam, tanggalKembali);
         
@@ -103,20 +109,19 @@ public class TransaksiService {
             return;
         }
 
-        System.out.println("\n--- Riwayat Buku dipinjam ---");
         System.out.println();
-        System.out.println(" -------------------------------------------------------------------------------------------"); // Sesuaikan panjang garis
+        System.out.println("------------------------------------------------------------------------");
         System.out.printf("%-1s | %-5s | %-15s | %-15s | %-15s |\n", "No", "ID Transaksi","ID Anggota", "Kode Buku", "Tanngal pinjam");
-        System.out.println(" -------------------------------------------------------------------------------------------"); // Sesuaikan panjang garis
+        System.out.println("------------------------------------------------------------------------");
         
         for (int i = 0; i < daftarTransaksi.length; i++) {
             if (daftarTransaksi[i] != null) {
-                System.out.printf("%-1d | %-5s | %-15s | %-15s | %-15s |\n",
+                System.out.printf("%-2d | %-12s | %-15s | %-15s | %-15s |\n",
                     (i + 1),
                     daftarTransaksi[i].getIdTransaksi(),
                     daftarTransaksi[i].getIdAnggota(),
                     daftarTransaksi[i].getKodeBuku(),
-                    "[" + daftarTransaksi[i].getTanggalKembali() + "]");
+                    "[" + daftarTransaksi[i].getTanggalPinjam() + "]");
             }
         }
 
