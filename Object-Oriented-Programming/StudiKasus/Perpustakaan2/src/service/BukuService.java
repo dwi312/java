@@ -193,6 +193,41 @@ public class BukuService {
         }
     }
 
+    public String kembaliBuku(Scanner input) {
+        int[] indexMaping = new int[daftarBuku.length];
+        int count = 0;
+
+        for (int i = 0; i < daftarBuku.length; i++) {
+            if (daftarBuku[i] != null && daftarBuku[i].getStatus().equalsIgnoreCase("Dipinjam")) {
+                indexMaping[count] = i;
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            System.out.println("Tidak ada buku yang tersedia.");
+            return "";
+        }
+
+        int pilihan;
+        while (true) {
+            System.out.print("--- Pengembalian Buku ---");
+            System.out.print("Pilih nomor yang tersedia: ");
+            pilihan = PerpusUtil.inputInt(input);
+            
+            if (pilihan >= 1 && pilihan <= count) {
+                int realIndex = indexMaping[pilihan -1];
+                Buku buku = daftarBuku[realIndex];
+                buku.setStatus("Tersedia");
+
+                System.out.println("Kode Buku: " +buku.getKodeBuku() + " telah dikembalikan.");
+                return buku.getKodeBuku();
+            } else {
+                System.out.println("Nomor tidak valid.");
+            }   
+        }
+    }
+
     public Buku bukuDipinjam() {
         for (int i = 0; i < daftarBuku.length; i++) {
             if (daftarBuku[i] != null && daftarBuku[i].getStatus().equalsIgnoreCase("Dipinjam")) {

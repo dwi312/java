@@ -69,7 +69,7 @@ public class Perpustakaan {
             case 6:
                 PerpusUtil.clearScreen();
                 System.out.println("\n=== Kembalikan Buku ===");
-                // transaksi.kembalikanBuku()
+                transaksi.kembalikanBuku(input);
                 PerpusUtil.enterToContinue(input);
                 break;
 

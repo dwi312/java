@@ -28,9 +28,10 @@ public class AnggotaService {
         return false;
     }
 
-    public Anggota cariAnggota(String idAnggota) {
+    public Anggota cariAnggota(String data) {
         for (int i = 0; i < index; i++) {
-            if (daftarAnggota[i].getIdAnggota().equalsIgnoreCase(idAnggota)) {
+            if (daftarAnggota[i].getIdAnggota().equalsIgnoreCase(data) ||
+                daftarAnggota[i].getNama().equalsIgnoreCase(data)) {
                 return daftarAnggota[i];
             }
         }
