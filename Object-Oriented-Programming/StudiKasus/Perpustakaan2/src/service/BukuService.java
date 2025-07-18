@@ -130,31 +130,37 @@ public class BukuService {
     }
 
     public String pilihBuku(Scanner input) {
-        String kodeBukuSementara = "";
-        int num;
-        boolean ulang;
-        
-        
-        do {
-            System.out.print("Pilih nomor yang tersedia: ");
-            num = PerpusUtil.inputInt(input);
-            ulang = false;
-            
-            if(num < 1 || num > daftarBuku.length || daftarBuku[num - 1] == null) {
-                ulang = true;
-                System.out.println("Pilihan: " + num +" tidak valid.");
-            } else if (!daftarBuku[num-1].getStatus().equalsIgnoreCase("Tersedia")) {
-                ulang = true;
-            } else {
-                kodeBukuSementara = daftarBuku[num-1].getKodeBuku();
-                daftarBuku[num-1].setStatus("Dipinjam");
-            }
-            
-        } while (ulang);
+        // Buat mapping nomor urut ke index sebenarnya
+        int[] indexMaping = new int[daftarBuku.length];
+        int count = 0;
 
-        System.out.println(kodeBukuSementara);
-        
-        return kodeBukuSementara;
+        for (int i = 0; i < daftarBuku.length; i++) {
+            if (daftarBuku[i] != null && daftarBuku[i].getStatus().equalsIgnoreCase("Tersedia")) {
+                indexMaping[count] = i;
+                count++;
+            }
+        }
+        if (count == 0) {
+            System.out.println("Tidak ada buku yang tersedia.");
+            return "";
+        }
+
+        int pilihan;
+        while (true) {
+            System.out.print("Pilih nomor yang tersedia: ");
+            pilihan = PerpusUtil.inputInt(input);
+            
+            if (pilihan >= 1 && pilihan <= count) {
+                int realIndex = indexMaping[pilihan -1];
+                Buku buku = daftarBuku[realIndex];
+                buku.setStatus("Dipinjam");
+
+                System.out.println("Kode Buku: " +buku.getKodeBuku() + " telah dipinjam ");
+                return buku.getKodeBuku();
+            } else {
+                System.out.println("Nomor tidak valid.");
+            }   
+        }
     }
 
     public void loadData(String filePath){
