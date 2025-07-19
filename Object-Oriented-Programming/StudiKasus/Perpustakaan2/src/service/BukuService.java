@@ -4,22 +4,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.time.LocalDate;
 import java.util.Scanner;
 import model.Buku;
 import util.PerpusUtil;
 
 public class BukuService {
-    private Buku[] daftarBuku = new Buku[10];
-    private int index = 0;
-
-    public int cariIndex() {
-        for (int i = 0; i < daftarBuku.length; i++) {
-            if (daftarBuku[i] == null) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    private Buku[] daftarBuku = new Buku[50];
 
     public boolean cekArr() {
         for (int i = 0; i < daftarBuku.length; i++) {
@@ -32,52 +23,58 @@ public class BukuService {
 
     public Buku cariBuku(String data) {
         for (int i = 0; i < daftarBuku.length; i++) {
-            if (daftarBuku[i].getKodeBuku().equalsIgnoreCase(data)) {
+            if (daftarBuku[i] != null && daftarBuku[i].getKodeBuku().equalsIgnoreCase(data)) {
                 return daftarBuku[i];
             }
         }
         return null;
     }
 
-    public void tambahBuku(Scanner input) {
-        index = cariIndex();
+    private String generateKodeBuku() {
+        int count = 0;
+        for (int i = 0; i < daftarBuku.length; i++) {
+            if (daftarBuku[i] != null) {
+                count++;
+            }
+        }
+        return "B" + String.format("%03d", count + 1);
+    }
 
+    public void tambahBuku(Scanner input) {
         String kodeBuku;
         String judul;
         String penulis;
         String status;
 
-        if (index == -1) {
+        int slot = PerpusUtil.cariIndex(daftarBuku);
+        if (slot == -1) {
             System.out.println("Maaf penyimpanan sudah penuh. tidak bisa menambah buku");
             return;
         }
 
-        boolean kodeDupe;
+        boolean judulDupe;
 
         do {
-            System.out.print("Masukan Kode Buku: ");
-            kodeBuku = PerpusUtil.inputStr(input);
+            System.out.print("Masukan Judul Buku: ");
+            judul = PerpusUtil.inputStr(input);
 
-            kodeDupe = false;
+            judulDupe = false;
 
-            for (int i = 0; i < daftarBuku.length; i++) {
-                if (cariBuku(kodeBuku) != null) {
-                    kodeDupe = true;
-                    System.out.println("Kode buku sudah terdaftar. silahkan masukan kode lain.");
-                    break;
-                }
+            if (cariBuku(judul) != null) {
+                judulDupe = true;
+                System.out.println("Judul Buku sudah terdaftar.");
+                break;
             }
-        } while (kodeDupe);
-
-        System.out.print("Masukan Judul Buku: ");
-        judul = PerpusUtil.inputStr(input);
+        } while (judulDupe);
 
         System.out.print("Masukan Nama Penulis: ");
         penulis = PerpusUtil.inputStr(input);
 
-        daftarBuku[index] = new Buku(kodeBuku, judul, penulis);
-        index++;
+        kodeBuku = generateKodeBuku();
+        daftarBuku[slot] = new Buku(kodeBuku, judul, penulis);
         System.out.println("Buku: " + judul + " berhasil disimpan.");
+        System.out.println("Kode Buku: " + kodeBuku);
+        System.out.println("Tanggal Registrasi: " + LocalDate.now());
 
     }
 
@@ -88,27 +85,24 @@ public class BukuService {
         }
 
         // Header tabel
+        System.out.println("\n ==============================   DAFTAR BUKU   ====================================");
         System.out.println();
-        System.out.println(
-                " -------------------------------------------------------------------------------------------"); // Sesuaikan
-                                                                                                                 // panjang
-                                                                                                                 // garis
-        System.out.printf("%-1s | %-5s | %-35s | %-25s | %-12s |\n", "No", "id", "Judul", "Penulis", "Status");
-        System.out.println(
-                " -------------------------------------------------------------------------------------------"); // Sesuaikan
-                                                                                                                 // panjang
-                                                                                                                 // garis
+        System.out.println("-------------------------------------------------------------------------------------");
+        System.out.printf("%-4s | %-6s | %-31s | %-20s | %-10s |\n", "No", "Kode", "Judul", "Penulis", "Status");
+        System.out.println("-------------------------------------------------------------------------------------");
 
+        int no = 1;
         for (int i = 0; i < daftarBuku.length; i++) {
             if (daftarBuku[i] != null) {
-                System.out.printf("%-2d | %-5s | %-35s | %-25s | %-12s |\n",
-                        (i + 1),
+                System.out.printf("%-4d | %-6s | %-31s | %-20s | %-10s |\n",
+                        no++,
                         daftarBuku[i].getKodeBuku(),
                         daftarBuku[i].getJudul(),
                         daftarBuku[i].getPenulis(),
-                        "[" + daftarBuku[i].getStatus() + "]");
+                        daftarBuku[i].getStatus());
             }
         }
+        System.out.println("-------------------------------------------------------------------------------------");
     }
 
     public void bukuTersedia() {
@@ -117,24 +111,23 @@ public class BukuService {
             return;
         }
 
-        System.out.println("\n--- Daftar Buku yang Tersedia ---");
+        System.out.println("\n=================        DAFTAR BUKU TERSEDIA        =================");
         System.out.println();
-        System.out.println("---------------------------------------------------------------------------");
-        System.out.printf("%-2s | %-5s | %-35s | %-25s |\n", "No", "ID", "Judul", "Penulis");
-        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.printf("%-4s | %-6s | %-31s | %-20s |\n", "No", "Kode", "Judul", "Penulis");
+        System.out.println("-----------------------------------------------------------------------");
 
-        int num = 0;
+        int no = 1;
         for (int i = 0; i < daftarBuku.length; i++) {
             if (daftarBuku[i] != null && daftarBuku[i].getStatus().equalsIgnoreCase("Tersedia")) {
-                num++;
-                System.out.printf("%-2d | %-5s | %-35s | %-25s |\n",
-                        num,
+                System.out.printf("%-4d | %-6s | %-31s | %-20s |\n",
+                        no++,
                         daftarBuku[i].getKodeBuku(),
                         daftarBuku[i].getJudul(),
                         daftarBuku[i].getPenulis());
             }
         }
-        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------");
     }
 
     public String pilihBuku(Scanner input) {
@@ -171,36 +164,6 @@ public class BukuService {
         }
     }
 
-    public void loadData(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            int nextIndex = cariIndex();
-
-            while ((line = reader.readLine()) != null && index < daftarBuku.length) {
-                String[] parts = line.split("\\|");
-
-                if (parts.length >= 3) {
-                    String kodeBuku = parts[0].trim();
-                    String judul = parts[1].trim();
-                    String penulis = parts[2].trim();
-                    String status = "Tersedia";
-
-                    if (parts.length >= 4) {
-                        status = parts[3].trim();
-                    }
-
-                    daftarBuku[nextIndex] = new Buku(kodeBuku, judul, penulis);
-                    daftarBuku[nextIndex].setStatus(status);
-                    this.index = nextIndex + 1;
-                    nextIndex = cariIndex();
-                }
-            }
-            System.out.println("Data Buku selesai dimuat.");
-        } catch (Exception e) {
-            System.out.println("Gagal memuat data: " + e.getMessage());
-        }
-    }
-
     public String kembaliBuku(Scanner input) {
         int[] indexMaping = new int[daftarBuku.length];
         int count = 0;
@@ -213,13 +176,27 @@ public class BukuService {
         }
 
         if (count == 0) {
-            System.out.println("Tidak ada buku yang tersedia.");
+            System.out.println("Tidak ada buku yang dipinjam.");
             return "";
         }
 
         int pilihan;
         while (true) {
-            System.out.print("--- Pengembalian Buku ---");
+            System.out.println("\n--- Daftar Buku yang Dipinjam ---");
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.printf("%-2s | %-5s | %-35s | %-25s |\n", "No", "ID", "Judul", "Penulis");
+            System.out.println("---------------------------------------------------------------------------");
+
+            for (int i = 0; i < count; i++) {
+                Buku buku = daftarBuku[indexMaping[i]];
+                System.out.printf("%-2d | %-5s | %-35s | %-25s |\n",
+                        (i + 1),
+                        buku.getKodeBuku(),
+                        buku.getJudul(),
+                        buku.getPenulis());
+            }
+            System.out.println("---------------------------------------------------------------------------");
+
             System.out.print("Pilih nomor yang tersedia: ");
             pilihan = PerpusUtil.inputInt(input);
 
@@ -236,13 +213,65 @@ public class BukuService {
         }
     }
 
-    public Buku bukuDipinjam() {
+    public void tampilBukuDipinjam() {
+        int[] indexMaping = new int[daftarBuku.length];
+        int count = 0;
+
         for (int i = 0; i < daftarBuku.length; i++) {
             if (daftarBuku[i] != null && daftarBuku[i].getStatus().equalsIgnoreCase("Dipinjam")) {
-                return daftarBuku[i];
+                indexMaping[count] = i;
+                count++;
             }
         }
-        return null;
+
+        if (count == 0) {
+            System.out.println("Tidak ada buku yang sedang dipinjam.");
+            return;
+        }
+
+        System.out.println("\n================= DAFTAR BUKU DIPINJAM =================");
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.printf("%-4s | %-6s | %-30s | %-20s |\n", "No", "Kode", "Judul", "Penulis");
+        System.out.println("--------------------------------------------------------------------------------");
+
+        for (int i = 0; i < count; i++) {
+            Buku buku = daftarBuku[indexMaping[i]];
+            System.out.printf("%-4d | %-6s | %-30s | %-20s |\n",
+                    (i + 1),
+                    buku.getKodeBuku(),
+                    buku.getJudul(),
+                    buku.getPenulis());
+        }
+        System.out.println("--------------------------------------------------------------------------------");
+    }
+
+    public void loadData(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int nextIndex = PerpusUtil.cariIndex(daftarBuku);
+
+            while ((line = reader.readLine()) != null && nextIndex != -1) {
+                String[] parts = line.split("\\|");
+
+                if (parts.length >= 3) {
+                    String kodeBuku = parts[0].trim();
+                    String judul = parts[1].trim();
+                    String penulis = parts[2].trim();
+                    String status = "Tersedia";
+
+                    if (parts.length >= 4) {
+                        status = parts[3].trim();
+                    }
+
+                    daftarBuku[nextIndex] = new Buku(kodeBuku, judul, penulis);
+                    daftarBuku[nextIndex].setStatus(status);
+                    nextIndex = PerpusUtil.cariIndex(daftarBuku);
+                }
+            }
+            System.out.println("Data Buku selesai dimuat.");
+        } catch (Exception e) {
+            System.out.println("Gagal memuat data: " + e.getMessage());
+        }
     }
 
     public void saveData(String filePath) {

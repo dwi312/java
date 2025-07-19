@@ -4,6 +4,15 @@ import java.util.Scanner;
 
 public class PerpusUtil {
 
+    public static <T> int cariIndex(T[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static int inputInt(Scanner input) {
         boolean valid = false;
         int angka = -1;

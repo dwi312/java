@@ -33,7 +33,6 @@ public class Perpustakaan {
         switch (pilihan) {
             case 1:
                 PerpusUtil.clearScreen();
-                System.out.println("\n=== Tambah Buku ===");
                 buku.tambahBuku(input);
                 PerpusUtil.enterToContinue(input);
                 saveDummyData();
@@ -41,7 +40,6 @@ public class Perpustakaan {
 
             case 2:
                 PerpusUtil.clearScreen();
-                System.out.println("\n=== Tambah Anggota ===");
                 anggota.tambahAnggota(input);
                 PerpusUtil.enterToContinue(input);
                 saveDummyData();
@@ -49,29 +47,25 @@ public class Perpustakaan {
 
             case 3:
                 PerpusUtil.clearScreen();
-                System.out.println("\n=== Daftar Buku ===");
                 buku.tampilDaftarBuku();
                 PerpusUtil.enterToContinue(input);
                 break;
 
             case 4:
                 PerpusUtil.clearScreen();
-                System.out.println("\n=== Daftar Anggota ===");
                 anggota.tampilDaftarAnggota();
                 PerpusUtil.enterToContinue(input);
                 break;
 
             case 5:
                 PerpusUtil.clearScreen();
-                System.out.println("\n=== Pinjam Buku ===");
-                transaksi.pijamBuku(input);
+                transaksi.pinjamBuku(input);
                 PerpusUtil.enterToContinue(input);
                 saveDummyData();
                 break;
 
             case 6:
                 PerpusUtil.clearScreen();
-                System.out.println("\n=== Kembalikan Buku ===");
                 transaksi.kembalikanBuku(input);
                 PerpusUtil.enterToContinue(input);
                 saveDummyData();
@@ -79,7 +73,6 @@ public class Perpustakaan {
 
             case 7:
                 PerpusUtil.clearScreen();
-                System.out.println("\n=== Riwayat Peminjaman ===");
                 transaksi.riwayatPinjam();
                 PerpusUtil.enterToContinue(input);
                 break;
@@ -100,11 +93,13 @@ public class Perpustakaan {
     private void initDummyData() {
         anggota.loadData("lib/anggota.txt");
         buku.loadData("lib/buku.txt");
+        transaksi.loadData("lib/transaksi.txt");
     }
 
     private void saveDummyData() {
         anggota.saveData("lib/anggota.txt");
         buku.saveData("lib/buku.txt");
+        transaksi.saveData("lib/transaksi.txt");
     }
 
 }

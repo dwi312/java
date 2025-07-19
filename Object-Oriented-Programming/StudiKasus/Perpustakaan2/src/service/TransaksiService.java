@@ -1,5 +1,10 @@
 package service;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 import model.Anggota;
@@ -8,8 +13,7 @@ import model.Transaksi;
 import util.PerpusUtil;
 
 public class TransaksiService {
-    private Transaksi[] daftarTransaksi = new Transaksi[20];
-    private int index = 0;
+    private Transaksi[] daftarTransaksi = new Transaksi[50];
 
     private BukuService bukuService;
     private AnggotaService anggotaService;
@@ -17,15 +21,6 @@ public class TransaksiService {
     public TransaksiService(BukuService bukuService, AnggotaService anggotaService) {
         this.bukuService = bukuService;
         this.anggotaService = anggotaService;
-    }
-
-    public int cariIndex() {
-        for (int i = 0; i < daftarTransaksi.length; i++) {
-            if (daftarTransaksi[i] == null) {
-                return index = i;
-            }
-        }
-        return -1;
     }
 
     public boolean cekArr() {
@@ -38,10 +33,10 @@ public class TransaksiService {
     }
 
     public Transaksi cariTransaksi(String data) {
-        for (int i = 0; i < index; i++) {
-            if (daftarTransaksi[i].getIdTransaksi().equalsIgnoreCase(data) ||
+        for (int i = 0; i < daftarTransaksi.length; i++) {
+            if (daftarTransaksi[i] != null && (daftarTransaksi[i].getIdTransaksi().equalsIgnoreCase(data) ||
                     daftarTransaksi[i].getIdAnggota().equalsIgnoreCase(data) ||
-                    daftarTransaksi[i].getKodeBuku().equalsIgnoreCase(data)) {
+                    daftarTransaksi[i].getKodeBuku().equalsIgnoreCase(data))) {
                 return daftarTransaksi[i];
             }
         }
@@ -49,16 +44,17 @@ public class TransaksiService {
     }
 
     private String generateIdTransaksi() {
-        return "TR" + String.format("%03d", index + 1);
+        int count = 0;
+        for (int i = 0; i < daftarTransaksi.length; i++) {
+            if (daftarTransaksi[i] != null) {
+                count++;
+            }
+        }
+        return "TR" + String.format("%03d", count + 1);
     }
 
-    public void pijamBuku(Scanner input) {
-        index = cariIndex();
-
-        if (index == -1) {
-            System.out.println("Maaf, penyimpanan transaksi sudah penuh.");
-            return;
-        }
+    public void pinjamBuku(Scanner input) {
+        int slot = PerpusUtil.cariIndex(daftarTransaksi);
 
         if (bukuService.cekArr() == false) {
             System.out.println("Daftar buku kosong.");
@@ -81,18 +77,26 @@ public class TransaksiService {
 
         int jumlahPinjam = 0;
         for (int i = 0; i < daftarTransaksi.length; i++) {
-            if (daftarTransaksi[i] != null && daftarTransaksi[i].getIdAnggota().equals(idAnggota)) {
+            if (daftarTransaksi[i] != null &&
+                    daftarTransaksi[i].getIdAnggota().equals(idAnggota) &&
+                    daftarTransaksi[i].getTanggalKembali() == null) {
                 jumlahPinjam++;
             }
         }
 
-        if (2 <= jumlahPinjam) {
+        if (jumlahPinjam >= 2) {
             System.out.println("Batas peminjam hanya 2 buku.");
             return;
         }
 
         bukuService.bukuTersedia();
         String kodeBuku = bukuService.pilihBuku(input);
+
+        if (kodeBuku.isEmpty()) {
+            System.out.println("Tidak ada buku yang dipinjam.");
+            return;
+        }
+
         LocalDate tanggalPinjam = LocalDate.now();
         LocalDate tanggalKembali = null;
         String idTransaksi = generateIdTransaksi();
@@ -100,7 +104,7 @@ public class TransaksiService {
         System.out.println("Buku berhasil dipinjam.");
         System.out.println("Tanggal: " + tanggalPinjam);
 
-        daftarTransaksi[index] = new Transaksi(idTransaksi, idAnggota, kodeBuku, tanggalPinjam, tanggalKembali);
+        daftarTransaksi[slot] = new Transaksi(idTransaksi, idAnggota, kodeBuku, tanggalPinjam, tanggalKembali);
 
     }
 
@@ -114,12 +118,14 @@ public class TransaksiService {
             return;
         }
 
+        String idAnggota = anggota.getIdAnggota();
+
         Transaksi[] pinjaman = new Transaksi[daftarTransaksi.length];
         int count = 0;
 
         for (int i = 0; i < daftarTransaksi.length; i++) {
             if (daftarTransaksi[i] != null &&
-                    daftarTransaksi[i].getIdAnggota().equalsIgnoreCase(dataAnggota) &&
+                    daftarTransaksi[i].getIdAnggota().equalsIgnoreCase(idAnggota) &&
                     daftarTransaksi[i].getTanggalKembali() == null) {
                 pinjaman[count] = daftarTransaksi[i];
                 count++;
@@ -127,33 +133,36 @@ public class TransaksiService {
         }
 
         if (count == 0) {
-            System.out.println("Anggota ini tidak memiliki buku yang dipinjam.");
+            PerpusUtil.clearScreen();
+            System.out.println("Nama Anggota         : " + anggota.getNama());
+            System.out.println("ID Anggota           : " + idAnggota);
+            System.out.println();
+            String msg = "Sementara ini tidak ada buku yang dipinjam.";
+            System.out.println("Buku yang dipinjam   : " + msg);
             return;
         }
 
+        PerpusUtil.clearScreen();
         System.out.println();
         System.out.println("Nama Anggota : " + anggota.getNama());
-        System.out.println("ID Anggota   : " + anggota.getIdAnggota());
+        System.out.println("ID Anggota   : " + idAnggota);
         System.out.println();
         System.out.println("Daftar Buku Dipinjam:");
-        System.out.println(
-                "--------------------------------------------------------------------------------------------");
-        System.out.printf("%-2s | %-8s | %-10s | %-20s | %-15s |\n", "No", "IDTRX", "Kode Buku", "Judul",
+        System.out.println("------------------------------------------------------------------------------------");
+        System.out.printf("%-2s | %-8s | %-10s | %-35s | %-15s |\n", "No", "IDTRX", "Kode Buku", "Judul",
                 "Tanggal Pinjam");
-        System.out.println(
-                "--------------------------------------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------------");
 
         for (int i = 0; i < count; i++) {
             Buku buku = bukuService.cariBuku(pinjaman[i].getKodeBuku());
-            System.out.printf("%-2d | %-8s | %-10s | %-20s | %-15s |\n",
+            System.out.printf("%-2d | %-8s | %-10s | %-35s | %-15s |\n",
                     (i + 1),
                     pinjaman[i].getIdTransaksi(),
                     buku.getKodeBuku(),
                     buku.getJudul(),
                     pinjaman[i].getTanggalPinjam());
         }
-        System.out.println(
-                "--------------------------------------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------------");
 
         int pilihan;
         while (true) {
@@ -175,31 +184,72 @@ public class TransaksiService {
     }
 
     public void riwayatPinjam() {
-        index = cariIndex();
-
         if (!cekArr()) {
             System.out.println("Belum ada anggota yang meminjam buku.");
             return;
         }
 
-        System.out.println();
-        System.out.println(
-                "----------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.printf("%-1s | %-5s | %-15s | %-15s | %-15s | %-15s |\n", "No", "ID Transaksi", "ID Anggota",
-                "Kode Buku", "Tanngal Pinjam", "Tanngal Kembali");
-        System.out.println(
-                "----------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("\n=======================       RIWAYAT PEMINJAMAN       ========================");
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.printf("%-4s | %-8s | %-10s | %-10s | %-15s | %-15s |\n",
+                "No", "ID TRX", "ID Anggota", "Kode Buku", "Tanggal Pinjam", "Tanggal Kembali");
+        System.out.println("-------------------------------------------------------------------------------");
 
+        int no = 1;
         for (int i = 0; i < daftarTransaksi.length; i++) {
             if (daftarTransaksi[i] != null) {
-                System.out.printf("%-2d | %-12s | %-15s | %-15s | %-15s | %-15s |\n",
-                        (i + 1),
+                System.out.printf("%-4d | %-8s | %-10s | %-10s | %-15s | %-15s |\n",
+                        no++,
                         daftarTransaksi[i].getIdTransaksi(),
                         daftarTransaksi[i].getIdAnggota(),
                         daftarTransaksi[i].getKodeBuku(),
-                        "[" + daftarTransaksi[i].getTanggalPinjam() + "]",
-                        "[" + daftarTransaksi[i].getTanggalKembali() + "]");
+                        (daftarTransaksi[i].getTanggalPinjam() != null
+                                ? daftarTransaksi[i].getTanggalPinjam()
+                                : "-"),
+                        (daftarTransaksi[i].getTanggalKembali() != null
+                                ? daftarTransaksi[i].getTanggalKembali()
+                                : "-"));
             }
+        }
+        System.out.println("-------------------------------------------------------------------------------");
+    }
+
+    public void loadData(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int nextIndex = PerpusUtil.cariIndex(daftarTransaksi);
+
+            while ((line = reader.readLine()) != null && nextIndex != -1) {
+                String[] parts = line.split("\\|");
+                if (parts.length >= 4) {
+                    LocalDate pinjam = LocalDate.parse(parts[3].trim());
+                    LocalDate kembali = (parts.length >= 5 && !parts[4].trim().isEmpty())
+                            ? LocalDate.parse(parts[4].trim())
+                            : null;
+                    daftarTransaksi[nextIndex] = new Transaksi(parts[0].trim(), parts[1].trim(),
+                            parts[2].trim(), pinjam, kembali);
+                    nextIndex = PerpusUtil.cariIndex(daftarTransaksi);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Gagal memuat data transaksi: " + e.getMessage());
+        }
+    }
+
+    public void saveData(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Transaksi trx : daftarTransaksi) {
+                if (trx != null) {
+                    writer.write(trx.getIdTransaksi() + "|" +
+                            trx.getIdAnggota() + "|" +
+                            trx.getKodeBuku() + "|" +
+                            trx.getTanggalPinjam() + "|" +
+                            (trx.getTanggalKembali() != null ? trx.getTanggalKembali() : ""));
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Gagal menyimpan data transaksi: " + e.getMessage());
         }
     }
 

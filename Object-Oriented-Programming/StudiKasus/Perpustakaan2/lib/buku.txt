@@ -7,4 +7,3 @@ B006|Effective Java|Joshua Bloch|Tersedia
 B007|Java: The Complete Reference|Herbert Schildt|Tersedia
 B008|Introduction to Algorithms|Thomas H. Cormen|Tersedia
 B009|Structure Computer Programs|Harold Abelson|Tersedia
-B010|The Art of Computer Programming|Donald Knuth|Tersedia
