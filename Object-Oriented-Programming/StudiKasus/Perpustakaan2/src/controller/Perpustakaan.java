@@ -36,6 +36,7 @@ public class Perpustakaan {
                 System.out.println("\n=== Tambah Buku ===");
                 buku.tambahBuku(input);
                 PerpusUtil.enterToContinue(input);
+                saveDummyData();
                 break;
 
             case 2:
@@ -43,6 +44,7 @@ public class Perpustakaan {
                 System.out.println("\n=== Tambah Anggota ===");
                 anggota.tambahAnggota(input);
                 PerpusUtil.enterToContinue(input);
+                saveDummyData();
                 break;
 
             case 3:
@@ -64,6 +66,7 @@ public class Perpustakaan {
                 System.out.println("\n=== Pinjam Buku ===");
                 transaksi.pijamBuku(input);
                 PerpusUtil.enterToContinue(input);
+                saveDummyData();
                 break;
 
             case 6:
@@ -71,6 +74,7 @@ public class Perpustakaan {
                 System.out.println("\n=== Kembalikan Buku ===");
                 transaksi.kembalikanBuku(input);
                 PerpusUtil.enterToContinue(input);
+                saveDummyData();
                 break;
 
             case 7:
@@ -96,6 +100,11 @@ public class Perpustakaan {
     private void initDummyData() {
         anggota.loadData("lib/anggota.txt");
         buku.loadData("lib/buku.txt");
+    }
+
+    private void saveDummyData() {
+        anggota.saveData("lib/anggota.txt");
+        buku.saveData("lib/buku.txt");
     }
 
 }

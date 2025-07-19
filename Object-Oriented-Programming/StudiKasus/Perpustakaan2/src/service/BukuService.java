@@ -1,7 +1,9 @@
 package service;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Scanner;
 import model.Buku;
 import util.PerpusUtil;
@@ -28,9 +30,9 @@ public class BukuService {
         return false;
     }
 
-    public Buku cariBuku(String kodeBuku) {
+    public Buku cariBuku(String data) {
         for (int i = 0; i < daftarBuku.length; i++) {
-            if (daftarBuku[i].getKodeBuku().equalsIgnoreCase(kodeBuku)) {
+            if (daftarBuku[i].getKodeBuku().equalsIgnoreCase(data)) {
                 return daftarBuku[i];
             }
         }
@@ -87,18 +89,24 @@ public class BukuService {
 
         // Header tabel
         System.out.println();
-        System.out.println(" -------------------------------------------------------------------------------------------"); // Sesuaikan panjang garis
+        System.out.println(
+                " -------------------------------------------------------------------------------------------"); // Sesuaikan
+                                                                                                                 // panjang
+                                                                                                                 // garis
         System.out.printf("%-1s | %-5s | %-35s | %-25s | %-12s |\n", "No", "id", "Judul", "Penulis", "Status");
-        System.out.println(" -------------------------------------------------------------------------------------------"); // Sesuaikan panjang garis
-        
+        System.out.println(
+                " -------------------------------------------------------------------------------------------"); // Sesuaikan
+                                                                                                                 // panjang
+                                                                                                                 // garis
+
         for (int i = 0; i < daftarBuku.length; i++) {
             if (daftarBuku[i] != null) {
                 System.out.printf("%-2d | %-5s | %-35s | %-25s | %-12s |\n",
-                    (i + 1),
-                    daftarBuku[i].getKodeBuku(),
-                    daftarBuku[i].getJudul(),
-                    daftarBuku[i].getPenulis(),
-                    "[" + daftarBuku[i].getStatus() + "]");
+                        (i + 1),
+                        daftarBuku[i].getKodeBuku(),
+                        daftarBuku[i].getJudul(),
+                        daftarBuku[i].getPenulis(),
+                        "[" + daftarBuku[i].getStatus() + "]");
             }
         }
     }
@@ -120,10 +128,10 @@ public class BukuService {
             if (daftarBuku[i] != null && daftarBuku[i].getStatus().equalsIgnoreCase("Tersedia")) {
                 num++;
                 System.out.printf("%-2d | %-5s | %-35s | %-25s |\n",
-                    num,
-                    daftarBuku[i].getKodeBuku(),
-                    daftarBuku[i].getJudul(),
-                    daftarBuku[i].getPenulis());
+                        num,
+                        daftarBuku[i].getKodeBuku(),
+                        daftarBuku[i].getJudul(),
+                        daftarBuku[i].getPenulis());
             }
         }
         System.out.println("---------------------------------------------------------------------------");
@@ -149,42 +157,42 @@ public class BukuService {
         while (true) {
             System.out.print("Pilih nomor yang tersedia: ");
             pilihan = PerpusUtil.inputInt(input);
-            
+
             if (pilihan >= 1 && pilihan <= count) {
-                int realIndex = indexMaping[pilihan -1];
+                int realIndex = indexMaping[pilihan - 1];
                 Buku buku = daftarBuku[realIndex];
                 buku.setStatus("Dipinjam");
 
-                System.out.println("Kode Buku: " +buku.getKodeBuku() + " telah dipinjam ");
+                System.out.println("Kode Buku: " + buku.getKodeBuku() + " telah dipinjam ");
                 return buku.getKodeBuku();
             } else {
                 System.out.println("Nomor tidak valid.");
-            }   
+            }
         }
     }
 
-    public void loadData(String filePath){
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+    public void loadData(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             int nextIndex = cariIndex();
 
-            while((line = reader.readLine()) != null && index < daftarBuku.length) {
+            while ((line = reader.readLine()) != null && index < daftarBuku.length) {
                 String[] parts = line.split("\\|");
-                
+
                 if (parts.length >= 3) {
                     String kodeBuku = parts[0].trim();
                     String judul = parts[1].trim();
                     String penulis = parts[2].trim();
                     String status = "Tersedia";
-                    
+
                     if (parts.length >= 4) {
                         status = parts[3].trim();
                     }
 
                     daftarBuku[nextIndex] = new Buku(kodeBuku, judul, penulis);
                     daftarBuku[nextIndex].setStatus(status);
-                    this.index = nextIndex +1;
-                    nextIndex = cariIndex(); 
+                    this.index = nextIndex + 1;
+                    nextIndex = cariIndex();
                 }
             }
             System.out.println("Data Buku selesai dimuat.");
@@ -214,17 +222,17 @@ public class BukuService {
             System.out.print("--- Pengembalian Buku ---");
             System.out.print("Pilih nomor yang tersedia: ");
             pilihan = PerpusUtil.inputInt(input);
-            
+
             if (pilihan >= 1 && pilihan <= count) {
-                int realIndex = indexMaping[pilihan -1];
+                int realIndex = indexMaping[pilihan - 1];
                 Buku buku = daftarBuku[realIndex];
                 buku.setStatus("Tersedia");
 
-                System.out.println("Kode Buku: " +buku.getKodeBuku() + " telah dikembalikan.");
+                System.out.println("Kode Buku: " + buku.getKodeBuku() + " telah dikembalikan.");
                 return buku.getKodeBuku();
             } else {
                 System.out.println("Nomor tidak valid.");
-            }   
+            }
         }
     }
 
@@ -235,6 +243,24 @@ public class BukuService {
             }
         }
         return null;
+    }
+
+    public void saveData(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (int i = 0; i < daftarBuku.length; i++) {
+                if (daftarBuku[i] != null) {
+                    writer.write(daftarBuku[i].getKodeBuku() + "|" +
+                            daftarBuku[i].getJudul() + "|" +
+                            daftarBuku[i].getPenulis() + "|" +
+                            daftarBuku[i].getStatus());
+                    writer.newLine();
+                }
+            }
+            System.out.println("Data buku berhasil disimpan ke file.");
+
+        } catch (Exception e) {
+            System.out.println("Gagal menyimpan data buku: " + e.getMessage());
+        }
     }
 
 }

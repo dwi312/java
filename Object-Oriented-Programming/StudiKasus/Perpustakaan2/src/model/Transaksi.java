@@ -38,6 +38,10 @@ public class Transaksi {
         return tanggalKembali;
     }
 
+    public void setTanggalKembali(LocalDate tanggalKembali) {
+        this.tanggalKembali = tanggalKembali;
+    }
+
     @Override
     public String toString() {
         return idTransaksi +

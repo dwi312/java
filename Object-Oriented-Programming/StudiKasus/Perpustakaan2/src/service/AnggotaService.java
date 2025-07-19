@@ -1,7 +1,9 @@
 package service;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Scanner;
 import model.Anggota;
 import util.PerpusUtil;
@@ -29,9 +31,9 @@ public class AnggotaService {
     }
 
     public Anggota cariAnggota(String data) {
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < daftarAnggota.length; i++) {
             if (daftarAnggota[i].getIdAnggota().equalsIgnoreCase(data) ||
-                daftarAnggota[i].getNama().equalsIgnoreCase(data)) {
+                    daftarAnggota[i].getNama().equalsIgnoreCase(data)) {
                 return daftarAnggota[i];
             }
         }
@@ -84,34 +86,37 @@ public class AnggotaService {
 
         // Header tabel
         System.out.println();
-        System.out.println(" --------------------------------------------------------------------------------------"); // Sesuaikan panjang garis
+        System.out.println(" --------------------------------------------------------------------------------------"); // Sesuaikan
+                                                                                                                       // panjang
+                                                                                                                       // garis
         System.out.printf("%-1s | %-15s | %-35s | %-25s |\n", "No", "ID", "Nama", "Kontak");
-        System.out.println(" ---------------------------------------------------------------------------------------"); // Sesuaikan panjang garis
-        
+        System.out.println(" ---------------------------------------------------------------------------------------"); // Sesuaikan
+                                                                                                                        // panjang
+                                                                                                                        // garis
 
         for (int i = 0; i < daftarAnggota.length; i++) {
             if (daftarAnggota[i] != null) {
                 System.out.printf("%-2d | %-15s | %-35s | %-25s |\n",
-                    (i + 1),
-                    daftarAnggota[i].getIdAnggota(),
-                    daftarAnggota[i].getNama(),
-                    "[" + daftarAnggota[i].getKontak() + "]");
+                        (i + 1),
+                        daftarAnggota[i].getIdAnggota(),
+                        daftarAnggota[i].getNama(),
+                        "[" + daftarAnggota[i].getKontak() + "]");
             }
         }
     }
-    
-    public void loadData(String filePath){
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+
+    public void loadData(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            while((line = reader.readLine()) != null && index < daftarAnggota.length) {
+            index = 0;
+            while ((line = reader.readLine()) != null && index < daftarAnggota.length) {
                 String[] parts = line.split("\\|");
-                
-                if (parts.length == 4) {
+
+                if (parts.length == 3) {
                     daftarAnggota[index] = new Anggota(
-                        parts[0].trim(),
-                        parts[1].trim(),
-                        parts[2].trim()
-                        );
+                            parts[0].trim(),
+                            parts[1].trim(),
+                            parts[2].trim());
                     index++;
                 }
             }
@@ -120,5 +125,22 @@ public class AnggotaService {
             System.out.println("Gagal memuat data: " + e.getMessage());
         }
     }
- 
+
+    public void saveData(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (int i = 0; i < daftarAnggota.length; i++) {
+                if (daftarAnggota[i] != null) {
+                    writer.write(daftarAnggota[i].getIdAnggota() + "|" +
+                            daftarAnggota[i].getNama() + "|" +
+                            daftarAnggota[i].getKontak());
+                    writer.newLine();
+                }
+            }
+            System.out.println("Data anggota berhasil disimpan ke file.");
+
+        } catch (Exception e) {
+            System.out.println("Gagal menyimpan data buku: " + e.getMessage());
+        }
+    }
+
 }
