@@ -38,7 +38,7 @@ public class AnggotaService {
                 count++;
             }
         }
-        return "B" + String.format("%03d", count + 1);
+        return "A" + String.format("%03d", count + 1);
     }
 
     public void tambahAnggota(Scanner input) {
@@ -83,7 +83,6 @@ public class AnggotaService {
             return;
         }
 
-        // Header tabel
         System.out.println("\n =========================   DAFTAR ANGGOTA  =============================");
         System.out.println();
         System.out.println("---------------------------------------------------------------------------");
@@ -116,6 +115,7 @@ public class AnggotaService {
                             parts[0].trim(),
                             parts[1].trim(),
                             parts[2].trim());
+                    System.out.println("Loaded: " + parts[0] + " - " + parts[1]);
                     nextIndex = PerpusUtil.cariIndex(daftarAnggota);
                 }
             }

@@ -12,7 +12,7 @@ public class Perpustakaan {
     private boolean exit = false;
     private int pilihan;
 
-    private PerpustakaanView view = new PerpustakaanView();
+    private PerpustakaanView view = new PerpustakaanView(this);
     private BukuService buku = new BukuService();
     private AnggotaService anggota = new AnggotaService();
     private TransaksiService transaksi = new TransaksiService(buku, anggota);
@@ -23,83 +23,68 @@ public class Perpustakaan {
         while (!exit) {
             view.menu();
             pilihan = PerpusUtil.inputInt(input);
-            exit = menuPilihan(pilihan);
+            exit = view.menuPilihan(pilihan);
         }
         System.out.println("Program berhenti. Terimakasih");
         input.close();
     }
 
-    public boolean menuPilihan(int pilihan) {
-        switch (pilihan) {
-            case 1:
-                PerpusUtil.clearScreen();
-                buku.tambahBuku(input);
-                PerpusUtil.enterToContinue(input);
-                saveDummyData();
-                break;
-
-            case 2:
-                PerpusUtil.clearScreen();
-                anggota.tambahAnggota(input);
-                PerpusUtil.enterToContinue(input);
-                saveDummyData();
-                break;
-
-            case 3:
-                PerpusUtil.clearScreen();
-                buku.tampilDaftarBuku();
-                PerpusUtil.enterToContinue(input);
-                break;
-
-            case 4:
-                PerpusUtil.clearScreen();
-                anggota.tampilDaftarAnggota();
-                PerpusUtil.enterToContinue(input);
-                break;
-
-            case 5:
-                PerpusUtil.clearScreen();
-                transaksi.pinjamBuku(input);
-                PerpusUtil.enterToContinue(input);
-                saveDummyData();
-                break;
-
-            case 6:
-                PerpusUtil.clearScreen();
-                transaksi.kembalikanBuku(input);
-                PerpusUtil.enterToContinue(input);
-                saveDummyData();
-                break;
-
-            case 7:
-                PerpusUtil.clearScreen();
-                transaksi.riwayatPinjam();
-                PerpusUtil.enterToContinue(input);
-                break;
-
-            case 0:
-                exit = true;
-                break;
-
-            default:
-                System.out.println("Pilihan tidak valid! pilih 1-6");
-                break;
-        }
-        System.out.println();
-        return exit;
-    }
-
-    // Di PerpustakaanController.java
     private void initDummyData() {
-        anggota.loadData("lib/anggota.txt");
-        buku.loadData("lib/buku.txt");
-        transaksi.loadData("lib/transaksi.txt");
+        anggota.loadData("data/anggota.txt");
+        buku.loadData("data/buku.txt");
+        transaksi.loadData("data/transaksi.txt");
     }
 
     private void saveDummyData() {
-        anggota.saveData("lib/anggota.txt");
-        buku.saveData("lib/buku.txt");
-        transaksi.saveData("lib/transaksi.txt");
+        anggota.saveData("data/anggota.txt");
+        buku.saveData("data/buku.txt");
+        transaksi.saveData("data/transaksi.txt");
+    }
+
+    public void tambahBuku() {
+        PerpusUtil.clearScreen();
+        buku.tambahBuku(input);
+        PerpusUtil.enterToContinue(input);
+        saveDummyData();
+    }
+
+    public void tambahAnggota() {
+        PerpusUtil.clearScreen();
+        anggota.tambahAnggota(input);
+        PerpusUtil.enterToContinue(input);
+        saveDummyData();
+    }
+
+    public void tampilDaftarBuku() {
+        PerpusUtil.clearScreen();
+        buku.tampilDaftarBuku();
+        PerpusUtil.enterToContinue(input);
+    }
+
+    public void tampilDaftarAnggota() {
+        PerpusUtil.clearScreen();
+        anggota.tampilDaftarAnggota();
+        PerpusUtil.enterToContinue(input);
+    }
+
+    public void pinjamBuku() {
+        PerpusUtil.clearScreen();
+        transaksi.pinjamBuku(input);
+        PerpusUtil.enterToContinue(input);
+        saveDummyData();
+    }
+
+    public void kembalikanBuku() {
+        PerpusUtil.clearScreen();
+        transaksi.kembalikanBuku(input);
+        PerpusUtil.enterToContinue(input);
+        saveDummyData();
+    }
+
+    public void riwayatPinjam() {
+        PerpusUtil.clearScreen();
+        transaksi.riwayatPinjam();
+        PerpusUtil.enterToContinue(input);
     }
 
 }

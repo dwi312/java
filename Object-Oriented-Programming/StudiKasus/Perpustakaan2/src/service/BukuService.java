@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Scanner;
 import model.Buku;
 import util.PerpusUtil;
@@ -23,7 +24,10 @@ public class BukuService {
 
     public Buku cariBuku(String data) {
         for (int i = 0; i < daftarBuku.length; i++) {
-            if (daftarBuku[i] != null && daftarBuku[i].getKodeBuku().equalsIgnoreCase(data)) {
+            if (daftarBuku[i] != null && 
+                (daftarBuku[i].getKodeBuku().equalsIgnoreCase(data) || 
+                 daftarBuku[i].getJudul().equalsIgnoreCase(data))) {
+                
                 return daftarBuku[i];
             }
         }
@@ -63,7 +67,7 @@ public class BukuService {
             if (cariBuku(judul) != null) {
                 judulDupe = true;
                 System.out.println("Judul Buku sudah terdaftar.");
-                break;
+                continue;
             }
         } while (judulDupe);
 
@@ -84,7 +88,6 @@ public class BukuService {
             return;
         }
 
-        // Header tabel
         System.out.println("\n ==============================   DAFTAR BUKU   ====================================");
         System.out.println();
         System.out.println("-------------------------------------------------------------------------------------");
@@ -265,6 +268,8 @@ public class BukuService {
 
                     daftarBuku[nextIndex] = new Buku(kodeBuku, judul, penulis);
                     daftarBuku[nextIndex].setStatus(status);
+                    System.out.println("Line: " + line);
+                    System.out.println("Parts: " + Arrays.toString(parts));
                     nextIndex = PerpusUtil.cariIndex(daftarBuku);
                 }
             }
