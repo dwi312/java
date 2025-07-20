@@ -1,0 +1,8 @@
+[submodule "Object-Oriented-Programming/StudiKasus/Perpustakaan2/lib/lib/helper"]
+	path = Object-Oriented-Programming/StudiKasus/Perpustakaan2/lib/lib/helper
+	url = https://github.com/dwi312/java-helper-lib.git
+	branch = main
+[submodule "Object-Oriented-Programming/StudiKasus/Perpustakaan2/lib/helper"]
+	path = Object-Oriented-Programming/StudiKasus/Perpustakaan2/lib/helper
+	url = https://github.com/dwi312/java-helper-lib.git
+	branch = main
