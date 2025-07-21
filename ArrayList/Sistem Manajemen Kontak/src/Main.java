@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class Main {
@@ -20,7 +19,7 @@ public class Main {
             System.out.print("Pilih: ");
             pilihan = input.nextInt();
             input.nextLine();
-            
+
             switch (pilihan) {
                 case 1:
                     System.out.print("Masukan Nama: ");
@@ -33,15 +32,10 @@ public class Main {
                     manager.lihatKontak();
                     break;
                 case 3:
-                    System.out.print("Masukan Nama yang dicari: ");
-                    String cari = input.nextLine();
-                    manager.cariKontak(cari);
+                    manager.cariKontak(input);
                     break;
                 case 4:
-                    System.out.println("Hapus Kontak");
-                    System.out.println("Masukan Nama yang akan dihapus: ");
-                    nama = input.nextLine();
-                    manager.hapusKontak(nama);
+                    manager.hapusKontak(input);
                     break;
                 case 5:
                     System.out.print("Masukkan nomor urut kontak yang diubah: ");
@@ -59,9 +53,49 @@ public class Main {
                 default:
                     System.out.println("Pilihan tidak valid");
             }
-            
+
         } while (pilihan != 0);
         manager.saveData("data.txt");
+    }
+
+    public static String valdasiStr(Scanner input) {
+        boolean valid = false;
+
+        String keyword = "";
+
+        while (!valid) {
+            keyword = input.nextLine();
+            if (keyword.trim().isEmpty()) {
+                System.out.println("Input tidak boleh kosong.");
+            } else {
+                valid = true;
+            }
+        }
+        return keyword;
+    }
+
+    public static int validasiInt(Scanner input) {
+        boolean valid = false;
+        int angka = -1;
+
+        while (!valid) {
+            try {
+                String keyword = input.nextLine();
+
+                if (keyword.trim().isEmpty()) {
+                    System.out.println("Input tidak boleh kosong.");
+                } else {
+                    angka = Integer.parseInt(keyword);
+                    valid = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Input tidak valid! harus angka");
+            } catch (Exception e) {
+                System.out.println("Terjadi kesalahan: " + e.getMessage());
+
+            }
+        }
+        return angka;
     }
 
 }
