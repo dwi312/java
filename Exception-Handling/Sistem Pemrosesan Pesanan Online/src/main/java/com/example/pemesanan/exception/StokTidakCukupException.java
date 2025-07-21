@@ -1,0 +1,7 @@
+package com.example.pemesanan.exception;
+
+public class StokTidakCukupException extends Exception {
+    public StokTidakCukupException(String message) {
+        super(message);
+    }
+}
